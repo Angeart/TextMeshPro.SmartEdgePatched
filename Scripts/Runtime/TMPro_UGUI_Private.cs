@@ -13,6 +13,15 @@ namespace TMPro
 
     public partial class TextMeshProUGUI
     {
+
+        public event System.Action<TextMeshProUGUI> mEvent_OnPreUploadMeshData;
+
+		void Call_OnPreUploadMeshData()
+		{
+			if (mEvent_OnPreUploadMeshData != null)
+				mEvent_OnPreUploadMeshData(this);
+		}
+
         [SerializeField]
         private bool m_hasFontAssetChanged = false; // Used to track when font properties have changed.
 
@@ -4430,6 +4439,7 @@ namespace TMPro
                     m_textInfo.meshInfo[0].SortGeometry(VertexSortingOrder.Reverse);
 
                 // Upload Mesh Data
+                Call_OnPreUploadMeshData();
                 m_mesh.MarkDynamic();
                 m_mesh.vertices = m_textInfo.meshInfo[0].vertices;
                 m_mesh.uv = m_textInfo.meshInfo[0].uvs0;
